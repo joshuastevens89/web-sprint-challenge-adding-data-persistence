@@ -5,10 +5,7 @@
 //   - [ ] `project_description` - optional
 //   - [ ] `project_completed` - the database defaults it to `false` (integer 0) if not provided
 const db = require('../../data/dbConfig');
-module.exports = {
-    get,
-    insert,
-}
+
 function get() {
     return db('projects')
     .then(projects => {
@@ -34,4 +31,9 @@ function insert(project) {
             }
         })
     })
+}
+
+module.exports = {
+    get,
+    insert,
 }
