@@ -9,6 +9,7 @@ exports.up = function(knex) {
         tbl.string('project_description', 256)
         tbl.boolean('project_completed', 0)
   
+})
 };
 
 /**
@@ -18,4 +19,4 @@ exports.up = function(knex) {
 exports.down = function(knex) {
     return knex.schema.dropTableIfExists('project')
   
-};
+}
