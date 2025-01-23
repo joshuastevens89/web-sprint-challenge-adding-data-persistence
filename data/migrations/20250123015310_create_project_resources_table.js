@@ -3,13 +3,10 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    return knex.schema.createTable('tasks', tbl => {
-        tbl.increments('task_id')
-        tbl.string('task_description').notNullable()
-        tbl.string('task_notes')
-        tbl.boolean('task_completed').defaultTo(false)
+    return knex.schema.createTable('project_resources', tbl => {
+        tbl.increments('id')
         tbl.integer('project_id').unsigned().notNullable().references('project_id').inTable('projects').onDelete('CASCADE')
-        
+        tbl.integer('resource_id').unsigned().notNullable().references('resource_id').inTable('resources').onDelete('CASCADE')
     })
   
 };
@@ -19,6 +16,6 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-    return knex.schema.dropTableIfExists('tasks')
+    return knex.schema.dropTableIfExists('project_resources')
   
 };

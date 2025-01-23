@@ -1,39 +1,27 @@
 // build your `Project` model here
-// build your `Project` model here
-// `project_id` - primary key
-//   - [ ] `project_name` - required
-//   - [ ] `project_description` - optional
-//   - [ ] `project_completed` - the database defaults it to `false` (integer 0) if not provided
 const db = require('../../data/dbConfig');
 
-function get() {
-    return db('projects')
-    .then(projects => {
-        return projects.map(project => {
-            return {
-                ...project,
-                project_completed: project.project_completed ? true : false
-            }
-        })
-    })
+async function get() {
+    const projects = await db('project');
+    return projects.map(project => ({
+        ...project,
+        project_completed: project.project_completed ? true : false
+    }));
 }
-function insert(project) {
-    return db('projects')
-    .insert(project)
-    .then(([project_id]) => {
-        return db('projects')
+
+async function insert(project) {
+    const [project_id] = await db('project').insert(project);
+    const insertedProject = await db('project')
         .where('project_id', project_id)
-        .first()
-        .then(project => {
-            return {
-                ...project,
-                project_completed: project.project_completed ? true : false
-            }
-        })
-    })
+        .first();
+
+    return {
+        ...insertedProject,
+        project_completed: insertedProject.project_completed ? true : false
+    };
 }
 
 module.exports = {
     get,
     insert,
-}
+};

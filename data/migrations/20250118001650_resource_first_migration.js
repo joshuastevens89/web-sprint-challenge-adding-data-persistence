@@ -3,10 +3,10 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    return knex.schema.createTable('resource', tbl => {
+    return knex.schema.createTable('resources', tbl => {
         tbl.increments('resource_id')
-        tbl.string('resource_name', 128).notNullable().unique()
-        tbl.string('resource_description', 256)
+        tbl.string('resource_name').notNullable().unique()
+        tbl.string('resource_description')
 
         
     })
@@ -18,6 +18,6 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-    return knex.schema.dropTableIfExists('resource')
+    return knex.schema.dropTableIfExists('resources')
   
 };
