@@ -2,10 +2,11 @@
 const db = require('../../data/dbConfig')
 
 
-function get(){
+async function getTasks() {
     return db('tasks as t')
-    .join('projects as p', 't.project_id', 'p.project_id')
+    .join('projects as p', 't.project_id', 'p.project.id')
     .select(
+        't.task_id',
         't.task_description',
         't.task_notes',
         't.task_completed',
@@ -13,21 +14,15 @@ function get(){
         'p.project_description'
 
     )
-    .then(task => task.map(task =>
-        ({ ...task, task_completed: task.task_completed ? true : false })
-      ));
-
+    .then(tasks => tasks.map(task => ({
+        ...task,
+        task_completed: Boolean(task.task_completed)
+    })))
 }
 
-function insert(task) {
-    return db('tasks').insert(task, 'task_id').then(([task_id]) => db('tasks').where({task_id}).first() )
-    
+async function createTask(task) {
+    const [id] = await db('tasks').insert(task)
+    return db('tasks').where('task_id', id).first()
 }
 
-
-
-module.exports = {
-    get,
-    insert
-}
-
+module.exports = { getTasks, createTask }
