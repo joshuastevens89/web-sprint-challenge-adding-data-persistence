@@ -7,7 +7,7 @@ exports.up = function(knex) {
         tbl.increments('task_id')
         tbl.string('task_description').notNullable()
         tbl.string('task_notes')
-        tbl.boolean('task_completed').defaultTo(false)
+        tbl.boolean('task_completed').defaultTo('false')
         tbl.integer('project_id').unsigned().notNullable().references('project_id').inTable('projects').onDelete('CASCADE')
         
     })
